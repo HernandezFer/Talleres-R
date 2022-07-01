@@ -10,16 +10,21 @@ Cada punto tendrá un puntaje de 1. Para la calificación sólo se tendrá en cu
 
 Responda las siguientes preguntas:
   
-  a. ¿Cuál es la principal diferencia entre los vectores creados con la función `c()` y las listas creadas con la función `list()`?. <br>
-  b. Suponga que tiene una lista de n elementos llamada `mi_lista`. ¿Cuál es la diferencia entre ejecutar `mi_lista[0]` y `mi_lista[[0]]`?
+  a. ¿Cuál es la principal diferencia entre los vectores creados con la función `c()` y las listas creadas con la función `list()`?. 
+  c() todas las variables deben ser del mismo tipo porqie al final los convertirá en texto
+    con list() se quita la resticción de que los objetos sean del mismo formato, acepta varios formatos
   
-  ## Punto 2. Extracción de elementos
+  b. Suponga que tiene una lista de n elementos llamada `mi_lista`. ¿Cuál es la diferencia entre ejecutar `mi_lista[0]` y `mi_lista[[0]]`
+     con mi_list[0]extrae la lista completa
+     con mi_list[[0]] extrae la posición que tiene el elemento dentro de la lista
+  
+     ## Punto 2. Extracción de elementos
   
   Teniendo en cuenta la matriz descrita en el siguiente bloque de código, escriba los comandos para extraer:
   
-  a. La segunda columna únicamente.<br>
-  b. La tercera fila únicamente.<br>
-  c. De la fila 3 a la fila 7.<br>
+  a. La segunda columna únicamente.
+  b. La tercera fila únicamente.
+  c. De la fila 3 a la fila 7.
   d. Las columnas 2 a 4 de las filas 1 y 2.
 
 ```r
@@ -45,11 +50,13 @@ Estructura
 numero <- 5
 
 # Solución:
-if (________) {
-  ________
-} else if () {
-  ________
+a <- 5
+if (a%%2==0) {
+  print('par')
+} else {
+  print('impar')
 }
+
 ```
 
 ## Punto 4. For
@@ -60,10 +67,11 @@ Usando un vector con una serie de nombres, escriba el código correspondiente pa
 nombres <- c("Andrea", "Carlos", "Juan", "Carolina", "Fernando", "Laura")
 
 # Solución:
-for (__________) {
-  ____________
-}
-```
+
+for (nombre in nombres) 
+  print(paste('bienvenidos',{nombre}))
+
+
 
 ## Punto 5. Funciones
 
@@ -73,9 +81,9 @@ Además, si el usuario no define el número b, la función debería asignar un v
 
 ```r
 # Solución:
-mi_funcion <- function(__________) {
-  return(__________)
-}
+mi_funcion <- function(a=2, b=3) 
+  return(a*b)
+
 
 respuesta <- mi_funcion(__________)
 ```
