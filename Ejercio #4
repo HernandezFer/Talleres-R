@@ -1,0 +1,6 @@
+#4 punto
+nombres <- c("Andrea", "Carlos", "Juan", "Carolina", "Fernando", "Laura")
+#solucion 
+for(nombre in nombres){
+  print(paste("BIENVENIDO")) 
+ }
