@@ -1,0 +1,14 @@
+# EJERCICIO 5
+5------
+  
+  
+  x<-2
+y<-3
+
+
+mi_funcion<-function(x,y){
+  return(x^y)
+}
+
+respuesta<-mi_funcion(2,3)
+mi_funcion(x,y)
