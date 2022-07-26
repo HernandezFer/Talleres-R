@@ -1,0 +1,56 @@
+library(tidyverse)
+library(readr)
+library(naniar)
+library(ggplot2)
+
+#1 Cargue la base de datos a su entorno de trabajo, imprima en consola la estructura de la 
+#base de datos e imprima las primeras 10 filas, usando las funciones incluidas en el tidyverse.
+
+mi_data <- read_csv("C:/Users/diego/Desktop/RStudio/R/archive/all_csv sorted.csv")
+
+colnames(mi_data)
+
+head(mi_data, 10) #muestra 10 paises
+
+#2 Usando las funciones del paquete naniar, cree un dataframe que muestre el número de datos
+#faltantes para cada una de las columnas de la base de datos.
+
+datos_faltantes <- data.frame(miss_var_summary(mi_data))
+##crea un dataframe con 13 filas, una columna con la variable y dos mas con los valores
+
+#3 Cree una nueva columna que contenga el cambio porcentual en el precio del internet entre 
+#2020 y 2021 y ordene la base de datos según esa columna. ¿Cuáles son los 10 países en los 
+#que el precio incrementó más?
+
+mi_data %%
+  mutate("cambio" = (as.numeric(`Average price of 1GB (USD  at the start of 2021)`)-
+          as.numeric(`Average price of 1GB (USD – at start of 2020)`))/as.numeric(`Average price of 1GB (USD  at start of 2020)`)*100) %>%
+  arrange(desc(cambio)) %>%
+  head(10)
+## Saint Helena, Ascension and Tristan da Cunha - 769%., 2.Malawi - 664%., 3.São Tomé and Príncipe - 430%., 4.Mauritius 386%.
+# 5.Spain - 223%, 6.French Polynesia - 211%., 7. Eswatini  - 154%, 8.Greece - 146%, 9.Gibraltar -  138%., 10.Trinidad and Tobago - 120%.
+
+
+#4 Encuentre la velocidad promedio de internet en Megabits para cada una de las regiones incluidas en la variable Continental region. 
+#¿Cuál es la región con el internet más lento?
+    
+ 
+internet <- mi_data %%
+  group_by(`Continental region`) %>%
+  summarise(velocidad_promedio=mean(`Avg \n(Mbit/s)Ookla`, na.rm=TRUE)) %>%
+  arrange(velocidad_promedio)
+
+# Africa Subsahariana tiene el internet más lento.
+
+#5 Usando el paquete ggplot2, elabore un gráfico de dispersión con las variables de velocidad promedio y porcentaje de usarios de internet. 
+#¿Se podría afirmar que hay una correlación entre las dos variables?
+
+
+dispersion <- mi_data %>%
+  mutate("usuarios" = `Internet users` / Population * 100)
+
+ggplot(dispersion, aes(x = `Avg \n(Mbit/s)Ookla`,
+                  y = usuarios)) +
+  geom_point()
+
+#tiene una correlación positiva
