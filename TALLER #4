@@ -1,0 +1,26 @@
+songs_normalize <-read.csv("songs_normalize.csv")
+library(ggplot2)
+library(tidyverse)
+ggplot(songs_normalize, aes(x = danceability , y = valence))+
+  geom_point(color="blue", alpha=.3)
+
+
+
+#Con la variable mode y el elimine la leyenda
+#pista: no olvide convertir la variable mode en un factor cuando 
+#laa incluya en la funcion aes().
+str(mode)
+View(DATA)
+
+DATA$mode = as.factor(DATA$mode)
+
+MI_boxplot<-ggplot(DATA,aes(x=mode,y=energy,color=mode,fill=mode))+
+  geom_boxplot(show.legend=F)
+
+MI_boxplot
+
+library(patchwork)
+
+p1 <- ggplot(DATA, aes(x= danceability, y = valence))+
+  geom_point(color="blue")
+              alpha=0.3) 
