@@ -1,26 +1,27 @@
-songs_normalize <-read.csv("songs_normalize.csv")
+#Lizeth Ortegon - María Fernanda Hernández
+
+library(readr)
 library(ggplot2)
 library(tidyverse)
-ggplot(songs_normalize, aes(x = danceability , y = valence))+
-  geom_point(color="blue", alpha=.3)
-
-
-
-#Con la variable mode y el elimine la leyenda
-#pista: no olvide convertir la variable mode en un factor cuando 
-#laa incluya en la funcion aes().
-str(mode)
-View(DATA)
-
-DATA$mode = as.factor(DATA$mode)
-
-MI_boxplot<-ggplot(DATA,aes(x=mode,y=energy,color=mode,fill=mode))+
-  geom_boxplot(show.legend=F)
-
-MI_boxplot
-
 library(patchwork)
 
-p1 <- ggplot(DATA, aes(x= danceability, y = valence))+
-  geom_point(color="blue")
-              alpha=0.3) 
+songs <-read.csv("C:/Users/diego/Desktop/R/songs_normalize.csv")
+
+# 1. Elabore un gráfico de dispersión con las variables danceability y valence, que tenga los puntos de color azúl y una transparencia de 0.3.
+
+ Grafico_dispersion <- ggplot(songs, aes(x = danceability , y = valence))+
+  geom_point(color = "blue", alpha = 0.3)
+
+
+# 2. Elabore un boxplot con la variable mode en el eje x y la variable energy en el eje y. Asigne el color de 
+# las cajas de acuerdo con la variable mode y elimine la leyenda.
+#pista: no olvide convertir la variable mode en un factor cuando la incluya en la funcion aes().
+
+
+MI_boxplot <- ggplot(songs, aes(x = as.factor(mode), y = energy, color = as.factor(mode))) +
+  geom_boxplot(show.legend = FALSE)
+
+
+# 3. Usando el paquete {patchwork}, construya una salida gráfica con los 4 gráficos anteriores de tal modo que aparezcan uno al lado del otro.
+
+Grafico_dispersion + MI_boxplot
