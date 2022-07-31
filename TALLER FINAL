@@ -1,0 +1,75 @@
+#TALLER FINAL
+
+#PUNTO 1
+##1.1. Loop if
+Calificacion <- 10
+if (Calificacion>=0 & Calificacion<10){
+  print("¡Hay mucho por mejorar!")
+} else if (Calificacion>=10 & Calificacion<20){
+  print("¡Bien! Pero podría ser excelente.")
+} else if (Calificacion>=20 & Calificacion<=30){
+  print("¡Excelente Servicio! Sigue así.")
+}
+
+
+##1.2. Funciones
+suma_calificacion <- function(calidad = 10, decoracion = 5, servicio = 15){
+  c <- calidad + decoracion + servicio
+  return(c)
+}
+
+suma_calificacion(12,8,10)
+suma_calificacion(8,4,)
+suma_calificacion()
+
+
+
+
+
+
+
+
+
+##PUNTO 3: ANÁLISIS ESTADISTICO
+##3.1. REGRESION LINEAL 
+regresion = lm((Price ~ Food + Decor + Service + East), 
+               data = Data_completa)
+
+summary(regresion)
+
+#CON LO OBSERVADO PODEMOS DENOTAR QUE NO TODAS LAS VARIABLES OBSERVADAS SON ESTADISTICAMENETE 
+##REPRESENTATIVAS ASI COMO SERVICE LA CUAL NO ALCANZA A REPRESENTAR UNA SIGNIFICACIA DE 0,05.
+###LA VARIABLE QUE MAS INFLUYE ES LA EAST EN ESTE CASO EL PRECIO DE LA COMIDA YA QUE NOS EVIDENCIA
+####COMO AUMENTO EL PRECIO EN UN 2.06, ASI QUE PODRIAMOS DECIR QUE EL PRECIO SUBIO EN LA COMIDA DE 
+#####ESTA ZONA EN UN 2.06.
+
+
+
+
+##PUNTO 4: VISUALIZACIÓN DE DATOS.
+
+##4.1. Gráfico de densidad.
+ggplot(Data_completa, aes(Service, linetype = factor(East)))+
+  geom_density() +
+  labs(
+    title = "Gráfico de densidad del Servicio",
+    x = "Servicio",
+    y = "Densidad",
+    linetype = "Este"
+  )
+
+#ASI POIDEMOS ENCONTRAR QUE MEJOR CALIFICADA ES LA DE ZONA DEL ESTE 
+###LA CUAL SE ENCUENTRA CON MEJOR PICO A LA DERECHA QUE LA DE LA ZONA OESTE 
+
+
+##4.2.GRAFICO DE DISPERSION 
+ggplot(Data_completa, aes(x = Price, y = Decor, color = factor(East))) +
+  geom_point() +
+  scale_color_manual(
+    labels = c("Oeste", 
+               "Este"),
+    values = c("blue", 
+               "green")
+  )
+  
+##PODEMOS VER COMO LA ZONA OESTE ES LA ZONA QUE CUENTA CON PRECIOS MAS BARATOS
