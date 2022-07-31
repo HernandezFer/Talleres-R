@@ -1,69 +1,143 @@
-#TALLER FINAL
+#TALLER FINAL - LIZETH ORTEGON - MARÍA FERNANDA HERNÁNDEZ
+
+library(tidyverse)
+library(readr)
+library(ggplot2)
 
 #PUNTO 1
 ##1.1. Loop if
-Calificacion <- 10
-if (Calificacion>=0 & Calificacion<10){
+Calificacion_cliente <- 10
+if (Calificacion_cliente >=0 & Calificacion_cliente <10){
   print("¡Hay mucho por mejorar!")
-} else if (Calificacion>=10 & Calificacion<20){
+} else if (Calificacion_cliente >=10 & Calificacion_cliente <20){
   print("¡Bien! Pero podría ser excelente.")
-} else if (Calificacion>=20 & Calificacion<=30){
+} else if (Calificacion_cliente >=20 & Calificacion_cliente <=30){
   print("¡Excelente Servicio! Sigue así.")
 }
 
 
 ##1.2. Funciones
-suma_calificacion <- function(calidad = 10, decoracion = 5, servicio = 15){
-  c <- calidad + decoracion + servicio
-  return(c)
+suma_calificacion_cliente <- function(calidad = 10, decoracion = 5, servicio = 15){
+  calificacion <- calidad + decoracion + servicio
+  return(calificacion)
 }
 
-suma_calificacion(12,8,10)
-suma_calificacion(8,4,)
-suma_calificacion()
+suma_calificacion_cliente(1,5,12)
+suma_calificacion_cliente(7)
+suma_calificacion_cliente()
+
+#PUNTO 2 - Tidyverse
+##Punto 2.1 Cargar datos
+
+rating <- read_csv("C:/Users/diego/Desktop/RStudio/R/archive/price_ratings.csv")
+
+glimpse()
+
+#En la base de datos de rating encontramos 672 filas, con 3 columnas: 2 tipo 'dbl' y 1 tipo 'chr'
+##las primeras 8 filas son:
+#     1 Price       43
+#     1 Food        22
+#     1 Decor       18
+#     1 Service     20
+#     2 Price       32
+#     2 Food        20
+#     2 Decor       19
+#     2 Service     19
+
+restaurantes <- read_csv("C:/Users/diego/Desktop/RStudio/R/archive/restaurant_locations.csv")
+
+glimpse()
+
+#En la base de datos restaurantes se encuentran 168 filas con 3 columnas, con las mismas características 
+# del data anterior: 2 tipo 'dbl' y 1 tipo 'chr'
+##las primeras 8 filas son:
+
+#             1 Daniella Ristorante     0
+#             2 Tello's Ristorante      0
+#             3 Biricchino              0
+#             4 Bottino                 0
+#             5 Da Umberto              0
+#             6 Le Madri                0
+#             7 Le Zie                  0
+#             8 Pasticcio               1
+
+#¿Ambos dataframes cumplen con que cada fila es una observación y cada columna es una variable?
+##No se cumple, en la base de rating todas las variables están en una colummna
+
+##2.2. Pivot
+
+rating_wider <- rating %>%
+ pivot_wider(names_from = Variable, values_from = Valor)
+
+##2.3 Joins
+
+Data <- rating_wider %>%
+ inner_join(restaurantes, by = c("Id" = "Id_restaurant"))
+
+##2.4 Select y arrange 
+
+ Datos <- Data %>%
+ select(c(Restaurant, Price, Service))%>%
+ arrange(Price)
+
+Datos %>%
+ head(1)
+
+Datos %>%
+ tail(1)
+
+#¿Cuál es el restaurante más caro? ¿Cuál es el más barato?
+
+#Con arrange ordenamos de menor a mayor y vemos que el restaurante más barato es Lamarca con 19
+#y el restaurante más caro es San Domenico con 65
 
 
+##2.5 Group_by y Summarise
+
+Data_final <- Data %>%
+ group_by(East)%>%
+ summarise(precio_promedio=mean(Food))
+
+#¿La comida es más cara en el lado Este o el lado Oeste de Manhattan?
+
+##La comida más cara es en el Este con precios de 20.86792
+
+#PUNTO 3: Análisis Estadístico
+
+##3.1. Regresión lineal
 
 
-
-
-
-
-
-##PUNTO 3: ANÁLISIS ESTADISTICO
-##3.1. REGRESION LINEAL 
 regresion = lm((Price ~ Food + Decor + Service + East), 
-               data = Data_completa)
+               data = Data)
+               
 
 summary(regresion)
 
-#CON LO OBSERVADO PODEMOS DENOTAR QUE NO TODAS LAS VARIABLES OBSERVADAS SON ESTADISTICAMENETE 
-##REPRESENTATIVAS ASI COMO SERVICE LA CUAL NO ALCANZA A REPRESENTAR UNA SIGNIFICACIA DE 0,05.
-###LA VARIABLE QUE MAS INFLUYE ES LA EAST EN ESTE CASO EL PRECIO DE LA COMIDA YA QUE NOS EVIDENCIA
-####COMO AUMENTO EL PRECIO EN UN 2.06, ASI QUE PODRIAMOS DECIR QUE EL PRECIO SUBIO EN LA COMIDA DE 
-#####ESTA ZONA EN UN 2.06.
+#¿Todas las variables son estadísticamente significaticas? ¿Qué variable parece influir más en el precio de la comida?
+
+##Se observa que no todas las variable son estadisticamente significativas, por ejemplo Service que solo representa el 0.05
+##La variable que mas influye en el precio de la comida es EAST con 2.06
 
 
-
-
-##PUNTO 4: VISUALIZACIÓN DE DATOS.
+#PUNTO 4: Visualización de datos
 
 ##4.1. Gráfico de densidad.
-ggplot(Data_completa, aes(Service, linetype = factor(East)))+
+
+ggplot(Data, aes(Service, linetype = factor(East)))+
   geom_density() +
   labs(
-    title = "Gráfico de densidad del Servicio",
+    title = "Estimación de la densidad",
     x = "Servicio",
     y = "Densidad",
     linetype = "Este"
   )
 
-#ASI POIDEMOS ENCONTRAR QUE MEJOR CALIFICADA ES LA DE ZONA DEL ESTE 
-###LA CUAL SE ENCUENTRA CON MEJOR PICO A LA DERECHA QUE LA DE LA ZONA OESTE 
+##La zona mejor calificada es la del Este, que tiene un pico a la derecha en comparación con la del Oeste
 
 
-##4.2.GRAFICO DE DISPERSION 
-ggplot(Data_completa, aes(x = Price, y = Decor, color = factor(East))) +
+##4.2.Gráfico de dispersión
+
+ggplot(Data, aes(x = Price, y = Decor, color = factor(East))) +
   geom_point() +
   scale_color_manual(
     labels = c("Oeste", 
@@ -72,4 +146,5 @@ ggplot(Data_completa, aes(x = Price, y = Decor, color = factor(East))) +
                "green")
   )
   
-##PODEMOS VER COMO LA ZONA OESTE ES LA ZONA QUE CUENTA CON PRECIOS MAS BARATOS
+  #¿A qué zona de Manhattan pertenece el restaurante con menor precio?
+##En la zona Oeste se encuentran los precios más baratos
